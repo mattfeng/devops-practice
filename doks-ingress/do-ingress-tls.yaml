@@ -4,8 +4,25 @@ metadata:
   name: hello-kubernetes-ingress
   annotations:
     kubernetes.io/ingress.class: nginx
+    cert-manager.io/cluster-issuer: letsencrypt-prod
 spec:
+  tls:
+  - hosts:
+    - hw1.biologyolympiads.com
+    - hw2.biologyolympiads.com
+    - www.biologyolympiads.com
+    secretName: hello-kubernetes-tls
   rules:
+  - host: "www.biologyolympiads.com"
+    http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: flask-hello
+            port:
+              number: 80
   - host: "hw1.biologyolympiads.com"
     http:
       paths:
